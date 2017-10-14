@@ -16,7 +16,7 @@ module.exports = () => (
           ).filter(
             // remove grommet-icons inside grommet node_modules
             file => file.indexOf('grommet/grommet-icons') === -1
-          ).reverse(); // reverse so es6 modules have higher priority
+          ); // reverse so es6 modules have higher priority
           const memberImports = path.node.specifiers.filter(
             specifier => specifier.type === 'ImportSpecifier'
           );
@@ -28,14 +28,7 @@ module.exports = () => (
             modulesInContext.some((module) => {
               // if webpack alias is enabled the es6 path does not exist.
               if (module.endsWith(`/${componentName}`)) {
-                if (process.env.NODE_ENV === 'development') {
-                  // in development webpack alias may be enabled
-                  // es6 modules are not available in the source code
-                  // we need to remove it and use commonjs structure.
                   newPath = module.replace('es6/', '');
-                } else {
-                  newPath = module;
-                }
                 return true;
               }
               return false;
